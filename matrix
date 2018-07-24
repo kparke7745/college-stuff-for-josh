@@ -1,0 +1,228 @@
+import java.util.*;
+import java.io.*;
+public class Matrix {
+	/**
+	 * pre: none
+	 * post: instantiate the two arrays and enter the menu method
+	 * main method
+	 * @param args
+	 * @throws IOException
+	 */
+	public static void main (String[] args) throws IOException {
+		Scanner infile= new Scanner(new File("F:\\workspace\\MP1\\src\\data.txt"));
+		int size= infile.nextInt();
+		int [][] matrix1= new int[size][size];
+		int [][] matrix2= new int[size][size];
+		for (int row=0;row<matrix1.length;row++) {
+			for (int col=0;col<matrix1[0].length;col++) {
+				matrix1[row][col]=infile.nextInt();
+			}
+		}
+		for (int row=0;row<matrix2.length;row++) {
+			for (int col=0;col<matrix2[0].length;col++) {
+				matrix2[row][col]=infile.nextInt();
+			}
+		}
+		infile.close();
+		menu(matrix1,matrix2);
+	}
+	/**
+	 * pre: the two instantiated 2D arrays from main
+	 * post: printed values of the array in matrix, altered values when user prompts certain changes, or exit the program
+	 * Print the values of the matrices, perform several calculations on them, and exit the program when prompted
+	 * @param matrix1
+	 * @param matrix2
+	 */
+	public static void menu(int[][] matrix1, int[][] matrix2) {
+		Scanner input= new Scanner (System.in);
+		int option=0;
+		while (option != 8) {
+			System.out.println("What would you like to do with the matrices:\n1)Print Matrices\n2)Sum Matrices\n3)Scalar Multiplication\n4)Matrix Product of A by B\n5)Matrix Product of B by A\n6)Matrix Difference of A by B\n7)Matrix Difference of B by A\n8) Exit");
+			option= input.nextInt();
+			if (option < 0 || option >=9) {
+				System.out.println("Invalid option");
+			}
+			else if (option == 1) {
+				printMatrices(matrix1,matrix2);
+			}
+			else if (option == 2) {
+				int[][] result=addMatrices(matrix1,matrix2);
+				System.out.println("Summed Matrix:");
+				for (int row=0;row<matrix1.length;row++) {
+					for (int col=0;col<matrix1[0].length;col++) {
+						System.out.print(result[row][col] + " ");
+					}
+					System.out.println();
+				}
+			}
+			else if (option==3) {
+				int scalar=0;
+				int matrixchoice=0;
+				System.out.println("Multiply which matrix?");
+				matrixchoice= input.nextInt();
+				System.out.println ("Multiply by what?");
+				scalar=input.nextInt();
+				if (matrixchoice != 1 && matrixchoice != 2) {
+					System.out.println("Invalid choice");
+				}
+				else if (matrixchoice==1) {
+					int[][] result=scalarProduct(matrix1, scalar);
+					System.out.println("Matrix scalar product:");
+					for (int row=0;row<matrix1.length;row++) {
+						for (int col=0;col<matrix1[0].length;col++) {
+							System.out.print(result[row][col] + " ");
+						}
+						System.out.println();
+					}
+				}
+				else {
+					int[][] result=scalarProduct(matrix2, scalar);
+					System.out.println("Matrix scalar product:");
+					for (int row=0;row<matrix1.length;row++) {
+						for (int col=0;col<matrix1[0].length;col++) {
+							System.out.print(result[row][col] + " ");
+						}
+						System.out.println();
+					}
+				}
+			}
+			else if(option==4) {
+				int[][] result=matrixProduct(matrix1,matrix2);
+				System.out.println("Matrices Product:");
+				for (int row=0;row<matrix1.length;row++) {
+					for (int col=0;col<matrix1[0].length;col++) {
+						System.out.print(result[row][col] + " ");
+					}
+					System.out.println();
+				}
+			}
+			else if(option==5) {
+				int[][] result= matrixProduct(matrix2,matrix1);
+				System.out.println("Matrices Product:");
+				for (int row=0;row<matrix1.length;row++) {
+					for (int col=0;col<matrix1[0].length;col++) {
+						System.out.print(result[row][col] + " ");
+					}
+					System.out.println();
+				}
+			}
+			else if (option==6) {
+				int[][] result=subtractMatrices(matrix1,matrix2);
+				System.out.println("Subtracted matrix");
+				for (int row=0;row<matrix1.length;row++) {
+					for (int col=0;col<matrix1[0].length;col++) {
+						System.out.print(result[row][col] + " ");
+					}
+					System.out.println();
+				}
+			}
+			else if (option==7) {
+				int[][] result=subtractMatrices(matrix2,matrix1);
+				System.out.println("Subtracted matrix");
+				for (int row=0;row<matrix1.length;row++) {
+					for (int col=0;col<matrix1[0].length;col++) {
+						System.out.print(result[row][col] + " ");
+					}
+					System.out.println();
+				}
+			}
+		}
+		input.close();
+		System.out.println("Program end. Thank you.");
+	}
+	
+	/**
+	 * pre: both two dimensional arrays initialized in main
+	 * post: values of the arrays in matrix form
+	 * Print the values of the array in matrix format
+	 * @param matrix1
+	 * @param matrix2
+	 */
+	public static void printMatrices (int[][] matrix1, int[][] matrix2) {
+		System.out.println("Matrix 1:");
+		for (int row=0;row<matrix1.length;row++) {
+			for (int col=0;col<matrix1[0].length;col++) {
+				System.out.print(matrix1[row][col] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+		System.out.println("Matrix 2:");
+		for (int row=0;row<matrix2.length;row++) {
+			for (int col=0;col<matrix2[0].length;col++) {
+				System.out.print(matrix2[row][col] + " ");
+			}
+			System.out.println();
+		}
+	}
+	
+	/**
+	 * pre: the two instantiated 2D arrays from main
+	 * post: single array with summed values from the two original arrays
+	 * Sum the values of the matrices and print them
+	 * @param matrix1
+	 * @param matrix2
+	 */
+	public static int[][] addMatrices(int[][] matrix1, int[][] matrix2) {
+		int[][] sum= new int[matrix1.length][matrix2[0].length];
+		for (int row= 0; row<matrix1.length;row++) {
+			for (int col=0;col<matrix1[0].length;col++) {
+				sum[row][col]=matrix1[row][col] + matrix2[row][col];
+			}
+		}
+		return sum;
+	}
+	
+	/**
+	 * pre: one of the instantiated arrays from main and a scalar value to multiply by
+	 * post: single array with values multiplied by the scalar value
+	 * Multiply the values of one of the matrices by the given scalar value and prints the result
+	 * @param matrix
+	 * @param scalar
+	 */
+	public static int[][] scalarProduct (int[][] matrix, int scalar) {
+		int[][] scalMatrix= new int[matrix.length][matrix[0].length];
+		for (int row= 0; row<matrix.length;row++) {
+			for (int col=0;col<matrix[0].length;col++) {
+				scalMatrix[row][col]=matrix[row][col] * scalar;
+			}
+		}
+		return scalMatrix;
+	}
+	
+	/**
+	 * pre: the two instantiated 2D arrays from main
+	 * post: single array that is the product of the original two arrays
+	 * Perform matrix multiplication on the original two matrices and return the resulting matrix
+	 * @param matrixA
+	 * @param matrixB
+	 * @return
+	 */
+	public static int[][] matrixProduct(int[][] matrixA, int[][] matrixB) {
+		int[][] product= new int[matrixA.length][matrixB[0].length];
+		for (int row=0;row<matrixA.length;row++) {
+			for (int col=0;col<matrixB[0].length;col++) {
+				for (int move=0;move<matrixA.length;move++)
+				product[row][col]+= matrixA[row][move]*matrixB[move][col];
+			}
+		}
+		return product;
+	}
+	
+	/**
+	 * pre: the two instantiated 2D arrays from main
+	 * post: single array that is the difference between the original two arrays
+	 * Subtract the values of the two original matrices and print the result
+	 * @param matrixA
+	 * @param matrixB
+	 */
+	public static int[][] subtractMatrices (int[][] matrixA, int[][] matrixB) {
+		int[][] difference= new int[matrixA.length][matrixB[0].length];
+		for (int row= 0; row<matrixA.length;row++) {
+			for (int col=0;col<matrixA[0].length;col++) {
+				difference[row][col]=matrixA[row][col] - matrixB[row][col];
+			}
+		}
+		return difference;
+	}
+}
