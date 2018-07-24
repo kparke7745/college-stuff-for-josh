@@ -1,0 +1,52 @@
+import java.util.*;
+public class UnitConversion {
+	/**
+	 * pre: none
+	 * post: print yard conversions in inches or feet, or end program
+	 * main method
+	 * @param args
+	 */
+	public static void main (String args[]) {
+		Scanner input= new Scanner (System.in);
+		int yards;
+		int option= 0;
+		while (option != 3) {
+			System.out.println ("What would you like to do:\n1. Convert yards to inches\n2. Convert yards to feet\n3. Exit Program");
+			option= input.nextInt();
+			if ((option <= 0) || (option >= 4)) {
+				System.out.println ("Invalid option");
+			}
+			if (option == 1) {
+				System.out.println ("How many yards?");
+				yards= input.nextInt();
+				System.out.println (yards + " yard(s) is equal to " + inches (yards) + " inches.");
+			}
+			if (option == 2) {
+				System.out.println ("How many yards?");
+				yards= input.nextInt();
+				System.out.println (yards + " yard(s) is equal to " + feet (yards) + " feet.");
+			}
+		}
+		System.out.println ("Program ended. Thank you.");
+	}
+	/**
+	 * pre: amount of yards
+	 * post: Return yards * 36
+	 * Convert yards to inches and return inches value after conversion
+	 * @param yards
+	 * @return
+	 */
+	public static int inches (int yards) {
+		return (yards * 36);
+	}
+	/**
+	 * pre: amount of yards
+	 * post: return yards * 3
+	 * Convert yards to feet and return feet value after conversion
+	 * @param yards
+	 * @return
+	 */
+	public static int feet (int yards) {
+		return (yards * 3);
+	}
+}
