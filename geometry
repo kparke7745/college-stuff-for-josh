@@ -1,0 +1,142 @@
+import java.util.*;
+public class Geometry {
+	/**
+	 * pre: none
+	 * post: instantiate the side, length, width, and radius variables and enter the menu method
+	 * main method
+	 * @param args
+	 */
+	public static void main (String [] args) {
+		int side= 0;
+		int length= 0;
+		int width= 0;
+		double radius= 0;
+		menu(side, length, width, radius);
+	}
+	
+	/**
+	 * pre: side, length, width, radius variables
+	 * post: Print the area and perimeter of a square, rectangle, or circle, or end program
+	 * Prints the area and perimeter of designated shape, and loops until users prompts program to end
+	 * @param side
+	 * @param length
+	 * @param width
+	 * @param radius
+	 */
+	public static void menu (int side, int length, int width, double radius) {
+		Scanner input=new Scanner(System.in);
+		String option= new String("0");
+		while (!option.equals("4")) {
+			System.out.println ("Choose a shape or exit program:\n1. Square\n2. Rectangle\n3. Circle\n4. Exit");
+			option=input.next();
+			if (!(option.equals("1") || option.equals("2") || option.equals("3") || option.equals("4"))) {
+				System.out.println ("Invalid option");
+			}
+			else if (option.equals("1")) {
+				System.out.println ("Enter the side length of the square: ");
+				side= input.nextInt();
+				if (side <= 0) {
+					System.out.println ("Bad Data");
+				}
+				else {
+					System.out.println ("Area: " + getArea(side));
+					System.out.println ("Perimeter: " + getPerimeter(side));
+				}
+			}
+			else if (option.equals("2")) {
+				System.out.println ("Enter the length of the rectangle: ");
+				length= input.nextInt();
+				System.out.println ("Enter the width of the rectangle: ");
+				width=input.nextInt();
+				if ((length <= 0) || (width <= 0)) {
+					System.out.println ("Bad Data");
+				}
+				else {
+					System.out.println ("Area: " + getArea(length, width));
+					System.out.println ("Perimeter: " + getPerimeter(length, width));
+				}
+			}
+			else if (option.equals("3")) {
+				System.out.println ("Enter the radius of the circle: ");
+				radius= input.nextDouble();
+				if (radius <= 0) {
+					System.out.println ("Bad Data");
+				}
+				else {
+					System.out.println ("Area: " + getArea(radius));
+					System.out.println ("Perimeter: " + getPerimeter(radius));
+				}
+			}
+		}
+		input.close();
+		System.out.println ("Program ended. Thank you!");
+	}
+	
+	/**
+	 * pre: value of variable side
+	 * post: return area of square
+	 * Receives the value of the square's side and returns its area value
+	 * @param side
+	 * @return
+	 */
+	public static int getArea (int side) {
+		return (side*side);
+	}
+	
+	/**
+	 * pre: value of variables length and width
+	 * post: return area of rectangle
+	 * Receives the value of the rectangle's length and width and returns its area value
+	 * @param length
+	 * @param width
+	 * @return
+	 */
+	public static int getArea (int length, int width) {
+		return (length*width);
+	}
+	
+	/**
+	 * pre: value of variable radius
+	 * post: return area of circle
+	 * Receives the value of the circle's radius and returns its area value
+	 * @param radius
+	 * @return
+	 */
+	public static double getArea (double radius) {
+		return (Math.PI*Math.pow(radius, 2));
+	}
+	
+	/**
+	 * pre: value of variable side
+	 * post; returns the perimeter of square
+	 * Receives the value of the square's side and returns its perimeter value
+	 * @param side
+	 * @return
+	 */
+	public static int getPerimeter (int side) {
+		return (side*4);
+	}
+	
+	/**
+	 * pre: value of variables length and width
+	 * post: returns the perimeter of rectangle
+	 * Receives the value of the rectangle's length and width and returns its perimeter value
+	 * @param length
+	 * @param width
+	 * @return
+	 */
+	public static int getPerimeter (int length, int width) {
+		return (2*length + 2*width);
+	}
+	
+	/**
+	 * pre: value of variable radius
+	 * post: returns the perimeter of circle
+	 * Receives the value of the circle's radius and returns its perimeter value
+	 * @param radius
+	 * @return
+	 */
+	public static double getPerimeter (double radius) {
+		return (2*Math.PI*radius);
+	}
+}
