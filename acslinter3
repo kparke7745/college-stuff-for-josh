@@ -1,0 +1,312 @@
+import java.util.*;
+public class ACSLintermediate3 {
+	public static void main (String[] args) {
+		Scanner input= new Scanner(System.in);
+		ArrayList<String> hexas= new ArrayList<String>();
+		for (int i= 1;i<9;i++) {
+			System.out.println("Enter hexidecimal value of the row:");
+			hexas.add(input.nextLine().toUpperCase());
+		}
+		int[][] board=createBoard(hexas);
+		printBoard(board);
+		System.out.println("Walker board created.");
+		for (int runs=0;runs<5;runs++) {
+			System.out.println("Please enter starting row position:");
+			int rowpos= input.nextInt();
+			System.out.println("Please enter starting column position:");
+			int colpos= input.nextInt();
+			System.out.println("Please enter the starting direction (A,B,L,R):");
+			String direction= input.next().toUpperCase();
+			System.out.println("Lastly, please enter the amount of moves to make:");
+			int amount= input.nextInt();
+			System.out.println("Walker end position: " + traverseBoard(rowpos, colpos, direction, amount, board));
+			System.out.println("\n");
+		}
+		input.close();
+	}
+	
+	public static int[][] createBoard(ArrayList<String> hexavalues) {
+		int[][] board= new int[8][8];
+		String[] row= new String[8];
+		row[0]=binaryConversion(hexavalues.get(0));
+		row[1]=binaryConversion(hexavalues.get(1));
+		row[2]=binaryConversion(hexavalues.get(2));
+		row[3]=binaryConversion(hexavalues.get(3));
+		row[4]=binaryConversion(hexavalues.get(4));
+		row[5]=binaryConversion(hexavalues.get(5));
+		row[6]=binaryConversion(hexavalues.get(6));
+		row[7]=binaryConversion(hexavalues.get(7));
+		for (int i=0;i<board.length;i++) {
+			for (int j=0;j<board[0].length;j++) {
+				board[i][j]=Integer.valueOf(row[i].substring(j,j+1));
+			}
+		}
+		return board;
+	}
+	
+	public static String binaryConversion(String hex) {
+		String hold= "";
+		for (int i=0;i<hex.length();i++) {
+			if (hex.length()==1) {
+				hold+="0000";
+			}
+			if (hex.substring(i,i+1).equals("F")) {
+				hold+="1111";
+			}
+			else if (hex.substring(i,i+1).equals("E")) {
+				hold+= "1110";
+			}
+			else if (hex.substring(i,i+1).equals("D")) {
+				hold+= "1101";
+			}
+			else if (hex.substring(i,i+1).equals("C")) {
+				hold+= "1100";
+			}
+			else if (hex.substring(i,i+1).equals("B")) {
+				hold+= "1011";
+			}
+			else if (hex.substring(i,i+1).equals("A")) {
+				hold+= "1010";
+			}
+			else if (hex.substring(i,i+1).equals("9")) {
+				hold+= "1001";
+			}
+			else if (hex.substring(i,i+1).equals("8")) {
+				hold+= "1000";
+			}
+			else if (hex.substring(i,i+1).equals("7")) {
+				hold+= "0111";
+			}
+			else if (hex.substring(i,i+1).equals("6")) {
+				hold+= "0110";
+			}
+			else if (hex.substring(i,i+1).equals("5")) {
+				hold+= "0101";
+			}
+			else if (hex.substring(i,i+1).equals("4")) {
+				hold+= "0100";
+			}
+			else if (hex.substring(i,i+1).equals("3")) {
+				hold+= "0011";
+			}
+			else if (hex.substring(i,i+1).equals("2")) {
+				hold+= "0010";
+			}
+			else if (hex.substring(i,i+1).equals("1")) {
+				hold+= "0001";
+			}
+			else if (hex.substring(i,i+1).equals("0")) {
+				hold+= "0000";
+			}
+		}
+		return hold;
+	}
+	public static void printBoard (int[][] walkerboard) {
+		for (int row=0;row<walkerboard.length;row++) {
+			for (int col=0;col<walkerboard[0].length;col++) {
+				System.out.print(walkerboard[row][col]);
+			}
+			System.out.println();
+		}
+	}
+	
+	public static String traverseBoard (int rowstart, int colstart, String direct, int moves, int[][] walkerboard) {
+		ArrayList<String> points= new ArrayList<String>();
+		for (int i=0;i<moves;i++) {
+			int turnval=0;
+			String pos= rowstart + "," + colstart;
+			if (walkerboard[rowstart-1][colstart-1] == 1) {
+				for (String point: points) {
+					if (pos.equals(point)) {
+						turnval++;
+						if (turnval==4) {
+							turnval=0;
+						}
+					}
+				}
+				points.add(pos);
+				if (direct.equals("R")) {
+					if (turnval==0) {
+						direct="A";
+						if (rowstart != 8){
+							rowstart++;
+						}
+						else {
+							rowstart=1;
+						}
+					}
+					if (turnval==1) {
+						if (colstart != 1) {
+							colstart--;
+						}
+						else {
+							colstart=8;
+						}
+					}
+					if (turnval==2) {
+						direct="B";
+						if (rowstart != 1) {
+							rowstart--;
+						}
+						else {
+							rowstart=8;
+						}
+					}
+					if (turnval==3) {
+						direct="L";
+						if (colstart != 8) {
+							colstart++;
+						}
+						else {
+							colstart=1;
+						}
+					}
+				}
+				else if (direct.equals("L")) {
+					if (turnval==0) {
+						direct="B";
+						if (rowstart != 1) {
+							rowstart--;
+						}
+						else {
+							rowstart=8;
+						}
+					}
+					if (turnval==1) {
+						if (colstart != 8) {
+							colstart++;
+						}
+						else {
+							colstart=1;
+						}
+					}
+					if (turnval==2) {
+						direct="A";
+						if (rowstart != 8) {
+							rowstart++;
+						}
+						else {
+							rowstart=1;
+						}
+					}
+					if (turnval==3) {
+						direct="R";
+						if (colstart != 1) {
+							colstart--;
+						}
+						else {
+							colstart=8;
+						}
+					}
+				}
+				else if (direct.equals("B")) {
+					if (turnval==0) {
+						direct="R";
+						if (colstart != 1) {
+							colstart--;
+						}
+						else {
+							colstart=8;
+						}
+					}
+					if (turnval==1) {
+						if (rowstart != 1) {
+							rowstart--;
+						}
+						else {
+							rowstart=8;
+						}
+					}
+					if (turnval==2) {
+						direct="L";
+						if (colstart != 8) {
+							colstart++;
+						}
+						else {
+							colstart=1;
+						}
+					}
+					if (turnval==3) {
+						direct="A";
+						if (rowstart != 8) {
+							rowstart++;
+						}
+						else {
+							rowstart=1;
+						}
+					}
+				}
+				else if (direct.equals("A")) {
+					if (turnval==0) {
+						direct="L";
+						if (colstart != 8) {
+							colstart++;
+						}
+						else {
+							colstart=1;
+						}
+					}
+					if (turnval==1) {
+						if (rowstart != 8) {
+							rowstart++;
+						}
+						else {
+							rowstart=1;
+						}
+					}
+					if (turnval==2) {
+						direct="R";
+						if (colstart != 1) {
+							colstart--;
+						}
+						else {
+							colstart=8;
+						}
+					}
+					if (turnval==3) {
+						direct="B";
+						if (rowstart != 1) {
+							rowstart--;
+						}
+						else {
+							rowstart=8;
+						}
+					}
+				}
+			}
+			else if (direct.equals("R")){
+				if (colstart != 1) {
+					colstart--;
+				}
+				else {
+					colstart=8;
+				}
+			}
+			else if (direct.equals("L")) {
+				if (colstart != 8) {
+					colstart++;
+				}
+				else {
+					colstart=1;
+				}
+			}
+			else if (direct.equals("B")) {
+				if (rowstart != 1) {
+					rowstart--;
+				}
+				else {
+					rowstart=8;
+				}
+			}
+			else if (direct.equals("A")) {
+				if (rowstart != 8) {
+					rowstart++;
+				}
+				else {
+					rowstart=1;
+				}
+			}
+		}
+		return rowstart + "," + colstart;
+	}
+}
